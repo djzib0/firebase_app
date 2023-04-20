@@ -1,0 +1,32 @@
+.form-container {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    margin: 0 auto;
+}
+
+.form-container img {
+    width: 160px;
+    margin: 0 auto;
+}
+
+.form-container input,
+.form-container button {
+    border: 0;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 20px;
+    text-align: center;
+    font-family: 'Rubik', sans-serif;
+}
+
+.form-container input {
+    color: #432000;
+    background-color: #DCE1EB;
+    margin: 10px 0;
+}
+
+.form-container button {
+    color: #FDFDFD;
+    background-color: #AC485A;
+}
