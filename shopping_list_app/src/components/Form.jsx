@@ -1,16 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import './form.css'
+import { nanoid } from "nanoid"
+
 
 import CAT from '../assets/catincart.png'
 
 //firebase imports
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, push} from "firebase/database"
+import { getDatabase, ref, push, onValue, remove} from "firebase/database"
+
+
+
 
 export default function Form() {
     const [formData, setFormData] = useState(
         {cart: ""}
     )
+
+    const [cartItemArray, setCartItemsArray] = useState([])
 
     // Your web app's Firebase configuration
     const firebaseConfig = {
@@ -22,25 +29,73 @@ export default function Form() {
         messagingSenderId: "658938276512",
         appId: "1:658938276512:web:dffdffac3d18ad1f8e37c5"
     };
-  
-  // Initialize Firebase
+
+    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app)
     const cartItemsInDB = ref(database, "cartItems")
+
+
+
+    useEffect(() => {
+        onValue(cartItemsInDB, function(snapshot) {
+            console.log(snapshot.val() != null ? "haha": "not haha")
+            if (snapshot.val() != null) {
+                let itemsArray = (snapshot.val() != null) && Object.entries(snapshot.val()).map(item => {
+                return (
+                    <li key={item[0]} onDoubleClick={() => handleDoubleClick(item[0])}>{item[1]}</li>
+                )
+            })
+            setCartItemsArray(itemsArray)
+            } else {
+                setCartItemsArray([])
+            }
+            
+        })
+    }, [])
 
     function handleChange(e) {
         const {name, value} = e.target
             setFormData(prevFormData => {
                 return {
                     ...prevFormData,
-                    [name]: value
+                    [name]: value,
                 }
             })
     }
 
-    function handleClick() {
+
+    function handleClick(e) {
+        // push input value to database
         push(cartItemsInDB, formData.cart)
+        // reset form
+        setFormData({
+            cart: ""
+        })
+        fetchDataFromDB()
     }
+
+    function handleDoubleClick(id) {
+        console.log("usuwam", id)
+        let itemToDelete = ref(database, `cartItems/${id}`)
+        remove(itemToDelete)
+    } 
+
+    function fetchDataFromDB() {
+        onValue(cartItemsInDB, function(snapshot) {
+            if (snapshot.val() != null) {
+                let itemsArray = Object.entries(snapshot.val()) && Object.entries(snapshot.val()).map(item => {
+                    return (
+                        <li key={item[0]} onDoubleClick={() => handleDoubleClick(item[0])}>{item[1]}</li>
+                    )
+                })
+                setCartItemsArray(itemsArray)
+            } else {
+                setCartItemsArray([])
+            }
+        })
+    }
+
 
     return (
         <section>
@@ -54,6 +109,11 @@ export default function Form() {
                        value={formData.cart}
                     />
                 <button id="add-button" onClick={handleClick}>Add to cart</button>
+            </div>
+            <div className="container">
+                <ul id="shopping-list">
+                    {cartItemArray}
+                </ul>
             </div>
         </section>
     )
