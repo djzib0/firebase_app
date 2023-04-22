@@ -38,7 +38,7 @@ export default function Form() {
             if (snapshot.exists()) {
                 let itemsArray = (snapshot.val() != null) && Object.entries(snapshot.val()).map(item => {
                 return (
-                    <li key={item[0]} onDoubleClick={() => handleDoubleClick(item[0])}>{item[1]}</li>
+                    <li key={item[0]} onClick={() => handleCartItemClick(item[0])}>{item[1]}</li>
                 )
             })
             setCartItemsArray(itemsArray)
@@ -70,7 +70,7 @@ export default function Form() {
         fetchDataFromDB()
     }
 
-    function handleDoubleClick(id) {
+    function handleCartItemClick(id) {
         let itemToDelete = ref(database, `cartItems/${id}`)
         remove(itemToDelete)
     }
@@ -80,7 +80,7 @@ export default function Form() {
             if (snapshot.exists()) {
                 let itemsArray = Object.entries(snapshot.val()) && Object.entries(snapshot.val()).map(item => {
                     return (
-                        <li key={item[0]} onDoubleClick={() => handleDoubleClick(item[0])}>{item[1]}</li>
+                        <li key={item[0]} onClick={() => handleCartItemClick(item[0])}>{item[1]}</li>
                     )
                 })
                 setCartItemsArray(itemsArray)

@@ -5,7 +5,6 @@
 
   color-scheme: light dark;
   color: rgba(54, 54, 54, 0.87);
-  background-color: whitesmoke;
 
   --transition: 200ms ease-in;
 
@@ -32,6 +31,12 @@ html, body {
   max-width: 320px;
   width: 96%;
   margin: 0 auto;
+}
+
+p {
+  text-align: center;
+  margin: 0 auto;
+
 }
 
 ul {
