@@ -10,8 +10,6 @@ import { initializeApp } from "firebase/app";
 import { getDatabase, ref, push, onValue, remove} from "firebase/database"
 
 
-
-
 export default function Form() {
     const [formData, setFormData] = useState(
         {cart: ""}
@@ -35,12 +33,9 @@ export default function Form() {
     const database = getDatabase(app)
     const cartItemsInDB = ref(database, "cartItems")
 
-
-
     useEffect(() => {
         onValue(cartItemsInDB, function(snapshot) {
-            console.log(snapshot.val() != null ? "haha": "not haha")
-            if (snapshot.val() != null) {
+            if (snapshot.exists()) {
                 let itemsArray = (snapshot.val() != null) && Object.entries(snapshot.val()).map(item => {
                 return (
                     <li key={item[0]} onDoubleClick={() => handleDoubleClick(item[0])}>{item[1]}</li>
@@ -76,14 +71,13 @@ export default function Form() {
     }
 
     function handleDoubleClick(id) {
-        console.log("usuwam", id)
         let itemToDelete = ref(database, `cartItems/${id}`)
         remove(itemToDelete)
-    } 
+    }
 
     function fetchDataFromDB() {
         onValue(cartItemsInDB, function(snapshot) {
-            if (snapshot.val() != null) {
+            if (snapshot.exists()) {
                 let itemsArray = Object.entries(snapshot.val()) && Object.entries(snapshot.val()).map(item => {
                     return (
                         <li key={item[0]} onDoubleClick={() => handleDoubleClick(item[0])}>{item[1]}</li>
@@ -112,7 +106,7 @@ export default function Form() {
             </div>
             <div className="container">
                 <ul id="shopping-list">
-                    {cartItemArray}
+                    {cartItemArray.length > 0 ? cartItemArray : <p>No items here... yet</p>}
                 </ul>
             </div>
         </section>

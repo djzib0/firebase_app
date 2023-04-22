@@ -7,6 +7,9 @@
   color: rgba(54, 54, 54, 0.87);
   background-color: whitesmoke;
 
+  --transition: 200ms ease-in;
+
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -22,6 +25,7 @@ html, body {
   margin: 0;
   padding: 0;
   background-color: #EEF0F4;
+  user-select: none;
 }
 
 .container {
@@ -46,6 +50,12 @@ ul li {
   flex-grow: 1;
   border-radius: .5rem;
   text-align: center;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+ul li:hover {
+  background-color: #FFECC7;
 }
 
 

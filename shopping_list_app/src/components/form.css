@@ -18,6 +18,7 @@
     font-size: 20px;
     text-align: center;
     font-family: 'Rubik', sans-serif;
+    transition: var(--transition);
 }
 
 .form-container input {
@@ -29,4 +30,10 @@
 .form-container button {
     color: #FDFDFD;
     background-color: #AC485A;
+    cursor: pointer;
 }
+
+.form-container button:hover {
+    background-color: #432000;
+}
+
