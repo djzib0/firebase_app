@@ -33,6 +33,7 @@ export default function Form() {
     const database = getDatabase(app)
     const cartItemsInDB = ref(database, "cartItems")
 
+    // useEffect to get data from firebase when the website is opened
     useEffect(() => {
         onValue(cartItemsInDB, function(snapshot) {
             if (snapshot.exists()) {
@@ -48,6 +49,7 @@ export default function Form() {
             
         })
     }, [])
+    
 
     function handleChange(e) {
         const {name, value} = e.target
